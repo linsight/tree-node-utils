@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>tree-node-utils demo</title>
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <style>
+    body {
+      padding: 20px;
+    }
+
+    .stage {
+      background-color: #f9f9f9;
+      min-height: 100px;
+      width: 100%;
+      padding: 20px;
+      border-radius: 3px;
+      font-size: 10px;
+      line-height: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>tree-node-utils demo</h2>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input id="filterInput" class="form-control" placeholder="Enter to filter the tree">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input id="findInput" class="form-control" placeholder="Enter to find nodes as flat array">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input id="getInput" class="form-control" placeholder="Enter to get a node by key">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <span>
+            <button id="sortDescBtn" type="button" class="btn btn-primary">Sort Desc</button>
+            <button id="sortAscBtn" type="button" class="btn btn-primary">Sort Asc</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <pre id="filterResult" class="stage">
+    </pre>
+  </div>
+</body>
+</html>

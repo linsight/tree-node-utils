@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>position-element Demo</title>
+  <style>
+    #anchor-red {
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: 300px;
+      top: 100px;
+      color: white;
+    }
+
+    #anchor-green {
+      background-color: green;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: 30px;
+      top: 100px;
+      color: white;
+    }
+
+    #subject {
+      background-color: blue;
+      width: 50px;
+      height: 50px;
+      left: -100px;
+    }
+
+    .container {
+      widht: 400px;
+      height: 300px;
+      text-align: center;
+      position: relative;
+      background-color: #f0f0f0;
+    }
+
+    label {
+      display: inline-block;
+      margin-left: 10px;
+      margin-right: 3px;
+      min-width: 90px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="lib/position-element.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script>
+    function update() {
+      var placement = $("input[name='placement']:checked").val();
+      var anchor = $("input[name='anchor']:checked").val();
+      var distance = $("#distance").val();
+      var offset = $("#offset").val();
+      var autoReposition = $("#autoReposition").prop('checked');
+      var config = {
+        element: document.getElementById('subject'),
+        anchorElement: document.getElementById(anchor),
+        preferredPlacement: placement,
+        distance: parseInt(distance, 10),
+        alignmentOffset: parseInt(offset, 10),
+        autoReposition: !!autoReposition,
+      };
+      var positionElement = window['position-element'].default;
+      positionElement(config);
+    }
+
+
+    $(function () {
+      $('input[type=radio][name=placement]').change(update);
+      $('input[type=radio][name=anchor]').change(update);
+      $('#distance').change(update);
+      $('#offset').change(update);
+      $('#autoReposition').change(update);
+
+      update();
+    });
+  </script>
+</head>
+<body>
+
+<h1>position-element DEMO</h1>
+
+<div class="container">
+  <div id="anchor-red">Anchor Red</div>
+  <div id="anchor-green">Anchor green</div>
+  <div id="subject"></div>
+</div>
+
+<h3>Select anchor element</h3>
+<input name="anchor" type="radio" checked value='anchor-red' id="anchor-red-input" /><label
+  for="anchor-red-input">anchor-red</label>
+<input name="anchor" type="radio" value='anchor-green' id="anchor-green-input" /><label
+  for="anchor-green-input">anchor-green</label>
+
+<h3>Select placement</h3>
+<p>
+  <input name="placement" type="radio" value='up-center' id="up-center" /><label for="up-center">up-center</label>
+  <input name="placement" type="radio" value='up-right' id="up-right" /><label for="up-right">up-right</label>
+  <input name="placement" type="radio" value='down-left' id="down-left" /><label for="down-left">down-left</label>
+  <input name="placement" type="radio" value='down-center' id="down-center" /><label
+  for="down-center">down-center</label>
+  <input name="placement" type="radio" value='up-left' id="up-left" /><label
+  for="up-left">up-left</label>
+  <input name="placement" type="radio" value='down-right' id="down-right" /><label for="down-right">down-right</label>
+</p>
+<p>
+  <input name="placement" type="radio" value='left-top' id="left-top" /><label for="left-top">left-top</label>
+  <input name="placement" type="radio" value='left-middle' id="left-middle" /><label
+  for="left-middle">left-middle</label>
+  <input name="placement" type="radio" value='left-bottom' id="left-bottom" /><label
+  for="left-bottom">left-bottom</label>
+  <input name="placement" type="radio" value='right-top' id="right-top" /><label for="right-top">right-top</label>
+  <input name="placement" type="radio" checked value='right-middle' id="right-middle" /><label
+  for="right-middle">right-middle</label>
+  <input name="placement" type="radio" value='right-bottom' id="right-bottom" /><label
+  for="right-bottom">right-bottom</label>
+</p>
+<p>
+  <input name="placement" type="radio" value='unknown' id="unknown" /><label for="unknown">unknown/not
+  set</label>
+</p>
+
+
+<h3>toggle auto reposition</h3>
+<input id="autoReposition" type="checkbox" checked />
+<label for="autoReposition">autoReposition</label>
+( reposition when element goes out of viewport )
+
+<h3>Adjust distance and offset</h3>
+<label for="distance">Distance</label> <input id="distance" type="number" value="10" step="10">
+<br />
+<br />
+<label for="offset">Alignment Offset</label> <input id="offset" type="number" value="0" step="2">
+<h3>Code Example</h3>
+<pre>
+var config = {
+  element: document.getElementById('subject'),
+  anchorElement: document.getElementById('anchor'),
+  preferredPlacement: 'down-center',
+  distance: 10,
+  alignmentOffset: 0,
+  autoReposition: true,
+};
+
+positionElement(config);
+</pre>
+
+
+</body>
+</html>

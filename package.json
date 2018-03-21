@@ -1,0 +1,48 @@
+{
+  "name": "tree-node-utils",
+  "version": "1.0.0",
+  "description": "A set of functions for accessing, searching, filtering data nodes in a tree data structure.",
+  "main": "lib/tree-node-utils.js",
+  "scripts": {
+    "build": "webpack --env dev && webpack --env build && npm run test",
+    "build:demo": "webpack --env dev && webpack --config webpack.config.demo.js",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --require babel-core/register --colors ./src/*.spec.js",
+    "test:watch": "mocha --require babel-core/register --colors -w ./test/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linsight/tree-node-utils"
+  },
+  "keywords": [
+    "react",
+    "provider",
+    "state"
+  ],
+  "author": "David Lin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/linsight/tree-node-utils.git/issues"
+  },
+  "homepage": "https://linsight.github.io/tree-node-utils/",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.1.2",
+    "eslint": "^4.13.1",
+    "eslint-loader": "^1.9.0",
+    "html-webpack-plugin": "^3.0.7",
+    "jsdom": "^11.6.2",
+    "mocha": "^4.0.1",
+    "webpack": "^3.10.0",
+    "yargs": "^11.0.0"
+  },
+  "dependencies": {}
+}
