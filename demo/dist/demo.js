@@ -121,8 +121,7 @@ var exampleTree = [{
 var utils = new _index2.default();
 
 function update(event) {
-  var target = event.target;
-
+  var target = event && event.target || {};
   var filterInput = document.querySelector('#filterInput');
   var findInput = document.querySelector('#findInput');
   var getInput = document.querySelector('#getInput');
@@ -332,21 +331,20 @@ var TreeNodeUtils = function () {
     }
   }, {
     key: 'filterNode',
-    value: function filterNode(node, predicate, keepBranch) {
+    value: function filterNode(node, predicate) {
       var res = null;
       var self = this;
 
       var filteredChildren = self.isBranch(node) ? node.children.map(function (childNode) {
-        return self.filterNode(childNode, predicate, keepBranch);
+        return self.filterNode(childNode, predicate);
       }).filter(function (i) {
         return i !== null;
       }) : null;
 
       var hasChildrenMatched = filteredChildren && filteredChildren.length > 0;
       var isNodeItselfMatched = predicate(node);
-      var shouldKeep = keepBranch && self.isBranch(node);
 
-      if (isNodeItselfMatched || hasChildrenMatched || shouldKeep) {
+      if (isNodeItselfMatched || hasChildrenMatched) {
         var childrenData = filteredChildren ? { children: filteredChildren } : {};
         res = Object.assign({}, node, childrenData);
       }

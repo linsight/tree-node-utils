@@ -22,7 +22,7 @@
   "author": "David Lin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/linsight/tree-node-utils.git/issues"
+    "url": "https://github.com/linsight/tree-node-utils/issues"
   },
   "homepage": "https://linsight.github.io/tree-node-utils/",
   "devDependencies": {

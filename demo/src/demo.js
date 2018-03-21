@@ -61,7 +61,7 @@ const exampleTree = [
 const utils = new TreeNodeUtils();
 
 function update(event) {
-  const { target } = event;
+  const target = event && event.target || {};
   const filterInput = document.querySelector('#filterInput');
   const findInput = document.querySelector('#findInput');
   const getInput = document.querySelector('#getInput');

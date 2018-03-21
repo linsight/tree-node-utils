@@ -67,6 +67,11 @@ Name|Description|
  
 
  
+# Install
+```
+npm install tree-node-utils --save
+```
+
 # Usage Example
 
 ```
@@ -88,5 +93,5 @@ const node = treeNodeUtils.getNodeByKey(treeNodes, 'ip');
 
 # Live demo
 
-[demo.html](https://linsight.github.io/tree-node-utils/demo/dist/index.html)
+[demo.html](https://linsight.github.io/tree-node-utils/demo/dist/)
 
