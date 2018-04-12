@@ -23,7 +23,7 @@ export default class TreeNodeUtils {
       if (node[self.keyField] === key) {
         found = node;
       } else if (self.hasChildren(node)) {
-        found = self.getNodeByKey(node.children, key);
+        found = self.getNodeByKey(node[self.childrenField], key);
       }
 
       if (found) {
@@ -44,7 +44,7 @@ export default class TreeNodeUtils {
       }
 
       if (self.hasChildren(node)) {
-        const foundChildren = self.findNodes(node.children, predicate);
+        const foundChildren = self.findNodes(node[self.childrenField], predicate);
         found = [...found, ...foundChildren];
       }
     }
@@ -57,7 +57,7 @@ export default class TreeNodeUtils {
     let res = null;
     const self = this;
 
-    const filteredChildren = self.isBranch(node) ? node.children.map((childNode) =>
+    const filteredChildren = self.isBranch(node) ? node[self.childrenField].map((childNode) =>
         self.filterNode(childNode, predicate)).filter(i => i !== null) : null;
 
     const hasChildrenMatched = filteredChildren && filteredChildren.length > 0;
