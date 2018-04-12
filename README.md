@@ -59,8 +59,8 @@ Name|Description|
 `findNodes(treeNodes, predicate)`| Returns a flat array of nodes that pass the predicate(test) function.
 `filterNodes(treeNodes, predicate)`| Filters the tree data structure with the predicate function. i.e. Return a copy of the data tree with unmatching nodes removed.
 `sortNodes(treeNodes, compareFunction)`| Sort the treeNodes and children of every data node using the given compare function. 
-`mapNodes(treenodes, mapFunction)`| Return a new tree after applying a function to every nodes in the original tree. This function is useful for transforming nodes in a tree. <br />`mapFunction` has the signature of `mapFunction(currentNode, parentNode)` and should return a new node object.
-
+`mapNodes(treeNodes, mapFunction)`| Return a new tree after applying a function to every nodes in the original tree. This function is useful for transforming nodes in a tree. <br />`mapFunction` has the signature of `mapFunction(currentNode, parentNode)` and should return a new node object.
+`renameChildrenFieldForNodes(treeNodes, newChildrenFieldName)` | Rename the 'childrenField' (e.g. 'children') to something else;
 
 **Note**:  
 

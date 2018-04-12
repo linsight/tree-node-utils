@@ -239,13 +239,13 @@ var TreeNodeUtils = function () {
   _createClass(TreeNodeUtils, [{
     key: 'hasChildren',
     value: function hasChildren(nodeData) {
-      var children = nodeData[this.childrenField];
+      var children = nodeData && nodeData[this.childrenField];
       return children && children.length > 0;
     }
   }, {
     key: 'isBranch',
     value: function isBranch(nodeData) {
-      var children = nodeData[this.childrenField];
+      var children = nodeData && nodeData[this.childrenField];
       return children && children.length >= 0;
     }
   }, {
@@ -411,6 +411,31 @@ var TreeNodeUtils = function () {
 
       return nodes.map(function (node) {
         return _this3.mapNode(node, mapFunction);
+      });
+    }
+  }, {
+    key: 'renameChildrenFieldForNode',
+    value: function renameChildrenFieldForNode(node, newChildrenField) {
+      var self = this;
+      var children = node[self.childrenField];
+      var newNode = _extends({}, node);
+
+      if (self.hasChildren(node)) {
+        delete newNode[self.childrenField];
+        newNode[newChildrenField] = children.map(function (n) {
+          return self.renameChildrenFieldForNode(n, newChildrenField);
+        });
+      }
+
+      return newNode;
+    }
+  }, {
+    key: 'renameChildrenFieldForNodes',
+    value: function renameChildrenFieldForNodes(nodes, newChildrenField) {
+      var _this4 = this;
+
+      return nodes.map(function (node) {
+        return _this4.renameChildrenFieldForNode(node, newChildrenField);
       });
     }
   }]);

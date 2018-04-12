@@ -140,4 +140,11 @@ describe('treeNodeUtils', () => {
       expect(result[0].children[2].children[1].path).to.equal('/foo/poo/moo');
     });
   });
+
+  describe('renameChildrenFieldForNodes', () => {
+    it('should map rename children filed for all nodes', () => {
+      let result = treeNodeUtils.renameChildrenFieldForNodes(tree, 'branch');
+      expect(result[0].branch[2].branch[1].key).to.equal('moo');
+    });
+  });
 });

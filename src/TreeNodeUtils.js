@@ -4,14 +4,13 @@ export default class TreeNodeUtils {
     this.childrenField = config.childrenField || 'children';
   }
 
-
   hasChildren(nodeData) {
-    const children = nodeData[this.childrenField];
+    const children = nodeData && nodeData[this.childrenField];
     return children && children.length > 0;
   }
 
   isBranch(nodeData) {
-    const children = nodeData[this.childrenField];
+    const children = nodeData && nodeData[this.childrenField];
     return children && children.length >= 0;
   }
 
@@ -95,7 +94,7 @@ export default class TreeNodeUtils {
   mapNode(node, mapFunction, parentNode) {
     const self = this;
 
-    const mappedNode = mapFunction({...node}, parentNode);
+    const mappedNode = mapFunction({ ...node }, parentNode);
 
     if (self.hasChildren(node)) {
       const children = node[self.childrenField]
@@ -109,5 +108,23 @@ export default class TreeNodeUtils {
 
   mapNodes(nodes, mapFunction) {
     return nodes.map(node => this.mapNode(node, mapFunction));
+  }
+
+  renameChildrenFieldForNode(node, newChildrenField) {
+    const self = this;
+    const children = node[self.childrenField];
+    const newNode = { ...node };
+
+    if (self.hasChildren(node)) {
+      delete newNode[self.childrenField];
+      newNode[newChildrenField] = children
+        .map(n => self.renameChildrenFieldForNode(n, newChildrenField));
+    }
+
+    return newNode;
+  }
+
+  renameChildrenFieldForNodes(nodes, newChildrenField) {
+    return nodes.map(node => this.renameChildrenFieldForNode(node, newChildrenField));
   }
 }
