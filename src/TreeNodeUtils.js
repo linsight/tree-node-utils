@@ -91,4 +91,23 @@ export default class TreeNodeUtils {
   sortNodes(nodes, compareFunction) {
     return nodes.sort(compareFunction).map(node => this.sortNode(node, compareFunction));
   }
+
+  mapNode(node, mapFunction, parentNode) {
+    const self = this;
+
+    const mappedNode = mapFunction({...node}, parentNode);
+
+    if (self.hasChildren(node)) {
+      const children = node[self.childrenField]
+        .map(n => self.mapNode(n, mapFunction, mappedNode));
+
+      mappedNode[self.childrenField] = children;
+    }
+
+    return mappedNode;
+  }
+
+  mapNodes(nodes, mapFunction) {
+    return nodes.map(node => this.mapNode(node, mapFunction));
+  }
 }

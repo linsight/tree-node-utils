@@ -387,6 +387,32 @@ var TreeNodeUtils = function () {
         return _this2.sortNode(node, compareFunction);
       });
     }
+  }, {
+    key: 'mapNode',
+    value: function mapNode(node, mapFunction, parentNode) {
+      var self = this;
+
+      var mappedNode = mapFunction(_extends({}, node), parentNode);
+
+      if (self.hasChildren(node)) {
+        var children = node[self.childrenField].map(function (n) {
+          return self.mapNode(n, mapFunction, mappedNode);
+        });
+
+        mappedNode[self.childrenField] = children;
+      }
+
+      return mappedNode;
+    }
+  }, {
+    key: 'mapNodes',
+    value: function mapNodes(nodes, mapFunction) {
+      var _this3 = this;
+
+      return nodes.map(function (node) {
+        return _this3.mapNode(node, mapFunction);
+      });
+    }
   }]);
 
   return TreeNodeUtils;

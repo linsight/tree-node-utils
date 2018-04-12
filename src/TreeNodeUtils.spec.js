@@ -130,4 +130,14 @@ describe('treeNodeUtils', () => {
       expect(result.map(node => node.key)).to.deep.equal(['foo', 'boo', 'poo', 'moo', 'koo']);
     });
   });
+
+  describe('mapNodes', () => {
+    it('should map sort nodes', () => {
+      const mapFunc = (n, parentN) => ({...n, path: `${parentN ? parentN.path : ''}/${n.key}`});
+      let result = treeNodeUtils.mapNodes(tree, mapFunc);
+
+      expect(result[0].path).to.equal('/foo');
+      expect(result[0].children[2].children[1].path).to.equal('/foo/poo/moo');
+    });
+  });
 });
