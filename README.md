@@ -53,8 +53,8 @@ And provides the following util functions:
 
 Name|Description|
 ---|---
-`hasChildren` | Returns if the node has children node.
-`isBranch` | Returns if the node has children field. This field could be empty;
+`hasChildren(node)` | Returns if the node has children node.
+`isBranch(node)` | Returns if the node has children field. This field could be empty;
 `getNodeByKey(treeNodes, key)`| Returns the data node having the matching 'key' value.
 `findNodes(treeNodes, predicate)`| Returns a flat array of nodes that pass the predicate(test) function.
 `filterNodes(treeNodes, predicate)`| Filters the tree data structure with the predicate function. i.e. Return a copy of the data tree with unmatching nodes removed.

@@ -63,7 +63,7 @@ export default class TreeNodeUtils {
     const isNodeItselfMatched = predicate(node);
 
     if (isNodeItselfMatched || hasChildrenMatched) {
-      const childrenData = filteredChildren ? { children: filteredChildren } : {};
+      const childrenData = filteredChildren ? { [self.childrenField]: filteredChildren } : {};
       res = Object.assign({}, node, childrenData);
     }
 
@@ -81,7 +81,7 @@ export default class TreeNodeUtils {
       const children = [...node[self.childrenField]]
         .sort(compareFunction)
         .map(childNode => self.sortNode(childNode, compareFunction));
-      return { ...node, children };
+      return { ...node, [self.childrenField]:children };
     }
 
     return node;
