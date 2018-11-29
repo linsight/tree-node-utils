@@ -33,17 +33,17 @@ export default class TreeNodeUtils {
     return found;
   }
 
-  findNodes(nodes, predicate) {
+  findNodes(nodes, predicate, parents = []) {
     let found = [];
     const self = this;
 
     for (const node of nodes) {
-      if (predicate(node)) {
+      if (predicate(node, parents)) {
         found = [...found, node];
       }
 
       if (self.hasChildren(node)) {
-        const foundChildren = self.findNodes(node[self.childrenField], predicate);
+        const foundChildren = self.findNodes(node[self.childrenField], predicate, [...parents, node]);
         found = [...found, ...foundChildren];
       }
     }
@@ -52,15 +52,15 @@ export default class TreeNodeUtils {
   };
 
 
-  filterNode(node, predicate) {
+  filterNode(node, predicate, parents = []) {
     let res = null;
     const self = this;
 
     const filteredChildren = self.isBranch(node) ? node[self.childrenField].map((childNode) =>
-        self.filterNode(childNode, predicate)).filter(i => i !== null) : null;
+        self.filterNode(childNode, predicate, [...parents, node])).filter(i => i !== null) : null;
 
     const hasChildrenMatched = filteredChildren && filteredChildren.length > 0;
-    const isNodeItselfMatched = predicate(node);
+    const isNodeItselfMatched = predicate(node, parents);
 
     if (isNodeItselfMatched || hasChildrenMatched) {
       const childrenData = filteredChildren ? { [self.childrenField]: filteredChildren } : {};
@@ -70,35 +70,39 @@ export default class TreeNodeUtils {
     return res;
   }
 
-  filterNodes(nodes, predicate) {
-    const filterFunc = (node) => this.filterNode(node, predicate);
-    return nodes.map(node => this.filterNode(node, filterFunc)).filter(i => i !== null);
+  filterNodes(nodes, predicate, parents = []) {
+    return nodes.map(node => this.filterNode(node, predicate, parents)).filter(i => i !== null);
   }
 
-  sortNode(node, compareFunction) {
+  sortNode(node, compareFunction, parents = []) {
     const self = this;
     if (self.hasChildren(node)) {
       const children = [...node[self.childrenField]]
-        .sort(compareFunction)
-        .map(childNode => self.sortNode(childNode, compareFunction));
+        .sort((...args) => compareFunction(...args, [...parents, node]))
+        .map(childNode => self.sortNode(
+          childNode,
+          compareFunction,
+          [...parents, node, childNode]
+        ));
       return { ...node, [self.childrenField]:children };
     }
 
     return node;
   }
 
-  sortNodes(nodes, compareFunction) {
-    return nodes.sort(compareFunction).map(node => this.sortNode(node, compareFunction));
+  sortNodes(nodes, compareFunction, parents = []) {
+    return nodes.sort((...args) => compareFunction(...args, parents)).map(
+      node => this.sortNode(node, compareFunction, parents));
   }
 
-  mapNode(node, mapFunction, parentNode) {
+  mapNode(node, mapFunction, parents = []) {
     const self = this;
 
-    const mappedNode = mapFunction({ ...node }, parentNode);
+    const mappedNode = mapFunction({ ...node }, parents);
 
     if (self.hasChildren(node)) {
       const children = node[self.childrenField]
-        .map(n => self.mapNode(n, mapFunction, mappedNode));
+        .map(n => self.mapNode(n, mapFunction, [...parents, mappedNode]));
 
       mappedNode[self.childrenField] = children;
     }
@@ -106,8 +110,8 @@ export default class TreeNodeUtils {
     return mappedNode;
   }
 
-  mapNodes(nodes, mapFunction) {
-    return nodes.map(node => this.mapNode(node, mapFunction));
+  mapNodes(nodes, mapFunction, parents = []) {
+    return nodes.map(node => this.mapNode(node, mapFunction, parents));
   }
 
   renameChildrenFieldForNode(node, newChildrenField) {
