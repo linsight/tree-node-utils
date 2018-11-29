@@ -102,6 +102,77 @@ describe('treeNodeUtils', () => {
       expect(result[0].key).to.equal('xfoo');
       expect(result[0].children[2].children[1].key).to.equal('xmoo');
     });
+    it('should filter tree by parent nodes', () => {
+      const result = treeNodeUtils.filterNodes(tree, (i, parents) => {
+        const parentMatched = parents.some(parent => parent.text.includes('poo'));
+        const nodeMatched = i.text.includes('poo');
+        return nodeMatched || parentMatched;
+      });
+      expect(result).to.deep.equal(
+        [
+          {
+            text: 'foo',
+            key: 'foo',
+            children: [
+              {
+                text: 'poo',
+                key: 'poo',
+                children: [
+                  {
+                    text: 'kar',
+                    key: 'kar',
+                  },
+                  {
+                    text: 'moo',
+                    key: 'moo',
+                    children: [
+                      {
+                        text: 'dar sar',
+                        key: 'dar sar',
+                      },
+                    ],
+                  },
+                  {
+                    text: 'koo',
+                    key: 'koo',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            text: 'xfoo',
+            key: 'xfoo',
+            children: [
+              {
+                text: 'xpoo',
+                key: 'xpoo',
+                children: [
+                  {
+                    text: 'xkar',
+                    key: 'xkar',
+                  },
+                  {
+                    text: 'xmoo',
+                    key: 'xmoo',
+                    children: [
+                      {
+                        text: 'xdar sar',
+                        key: 'xdar sar',
+                      },
+                    ],
+                  },
+                  {
+                    text: 'xkoo',
+                    key: 'xkoo',
+                  },
+                ],
+              },
+            ],
+          },
+        ]
+      );
+    });
   });
 
   describe('sortNodes', () => {
@@ -110,6 +181,17 @@ describe('treeNodeUtils', () => {
       let result = treeNodeUtils.sortNodes(tree, compareFunc);
       expect(result[0].children[2].children.map(i => i.text)).to.deep.equal(['kar', 'koo', 'moo']);
       expect(result[1].children[2].children.map(i => i.text)).to.deep.equal(['xkar', 'xkoo', 'xmoo']);
+    });
+    it('should get sort nodes by parents', () => {
+      const compareFunc = (a, b, parents) => {
+        if (parents.map(item => item.text).some(text => text.includes('x'))) {
+          return b.text.localeCompare(a.text);
+        }
+        return a.text.localeCompare(b.text);
+      };
+      let result = treeNodeUtils.sortNodes(tree, compareFunc);
+      expect(result[0].children[2].children.map(i => i.text)).to.deep.equal(['kar', 'koo', 'moo']);
+      expect(result[1].children[0].children.map(i => i.text)).to.deep.equal(['xmoo', 'xkoo', 'xkar']);
     });
   });
 
@@ -126,14 +208,25 @@ describe('treeNodeUtils', () => {
     it('should find multiple nodes', () => {
       const predicate = (node) => node.key.includes('oo') && !node.key.includes('x');
       const result = treeNodeUtils.findNodes(tree, predicate);
-
       expect(result.map(node => node.key)).to.deep.equal(['foo', 'boo', 'poo', 'moo', 'koo']);
+    });
+
+    it('should find multiple nodes using parents', () => {
+      const predicate = (node, parents) => {
+        if (node.children) {
+          return false;
+        }
+        return parents.map(parent => parent.text).some(text => text === 'xfoo');
+      };
+      const result = treeNodeUtils.findNodes(tree, predicate);
+      expect(result.map(node => node.key)).to.deep.equal(['xbar', 'xboo', 'xkar', 'xdar sar', 'xkoo']);
     });
   });
 
   describe('mapNodes', () => {
     it('should map sort nodes', () => {
-      const mapFunc = (n, parentN) => ({...n, path: `${parentN ? parentN.path : ''}/${n.key}`});
+      const mapFunc = (n, parents) =>
+        ({...n, path: `${parents.length ? '/' : ''}${parents.map(parent => parent.key).join('/')}/${n.key}`});
       let result = treeNodeUtils.mapNodes(tree, mapFunc);
 
       expect(result[0].path).to.equal('/foo');

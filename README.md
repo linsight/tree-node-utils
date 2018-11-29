@@ -68,6 +68,7 @@ Name|Description|
 2. `predicate` is a callback function to test each node, including any children nodes of the tree. Return true to keep the node, false otherwise;
 3. `compareFunction` is the same function used by [Array.sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort);
  
+All the callback functions (`predicate`, `compareFunction` and `mapFunction`) will receive the `parents` as the last parameters, containing the ancestors as an array.
 
  
 # Install
