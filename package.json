@@ -1,6 +1,6 @@
 {
   "name": "tree-node-utils",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "A set of functions for accessing, searching, filtering data nodes in a tree data structure.",
   "main": "lib/tree-node-utils.js",
   "scripts": {
